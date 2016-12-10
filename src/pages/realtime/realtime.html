@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Temps réel</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    Il est : {{ dateNow }}
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let stop of stops">
+      {{ stop.ligne }} : {{ stop.sens }} : {{ stop.arret }}
+    </ion-item>
+  </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="addRealtime()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

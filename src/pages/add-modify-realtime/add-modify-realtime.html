@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Ajout d'un arrêt</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Ligne</ion-label>
+      <ion-select [(ngModel)]="vers" (ionChange)="onLineSelected(vers)">
+        <ion-option *ngFor="let line of lines" value="{{ line.ligne[0].code }} : {{ line.ligne[0].sens }}">
+          {{ line.ligne[0].nom }} : {{ line.ligne[0].vers }}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Arrêts</ion-label>
+      <ion-select [(ngModel)]="stop" (ionChange)="onStopSelected(stop)">
+        <ion-option *ngFor="let oneStop of stops" value="{{ oneStop }}">
+          {{ oneStop.arret[0].nom }}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="save()"><ion-icon name="bookmark"></ion-icon></button>
+  </ion-fab>
+  <button ion-button round full (click)="find()">Rechercher</button>
+  <ion-list *ngIf="times">
+    <ion-item *ngFor="let time of times.horaires[0].horaire.passages">
+      Prochain passage : {{ time.duree }}
+    </ion-item>
+  </ion-list>
+</ion-content>
