@@ -20,7 +20,7 @@
     <ion-item>
       <ion-label>Arrêts</ion-label>
       <ion-select [(ngModel)]="stop" (ionChange)="onStopSelected(stop)">
-        <ion-option *ngFor="let oneStop of stops" value="{{ oneStop }}">
+        <ion-option *ngFor="let oneStop of stops" value="{{ oneStop.arret[0].nom }} : {{ oneStop.refs }} ">
           {{ oneStop.arret[0].nom }}
         </ion-option>
       </ion-select>
@@ -30,9 +30,9 @@
     <button ion-fab color="primary" (click)="save()"><ion-icon name="bookmark"></ion-icon></button>
   </ion-fab>
   <button ion-button round full (click)="find()">Rechercher</button>
-  <ion-list *ngIf="times">
-    <ion-item *ngFor="let time of times.horaires[0].horaire.passages">
-      Prochain passage : {{ time.duree }}
+  <ion-list *ngIf="showFind">
+    <ion-item *ngFor="let time of times.horaires[0].horaire">
+      Prochain passage : {{ time.passages[0].passage[0].duree }}
     </ion-item>
   </ion-list>
 </ion-content>

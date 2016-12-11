@@ -18,6 +18,7 @@ export class AddModifyRealtimePage {
   public couleur: string;
   public refs: string;
   public times: Array<any>;
+  public showFind: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public keolisApi: KeolisAPI, public linesService: LinesService) {
     this.platform.ready().then(() => {
@@ -59,11 +60,11 @@ export class AddModifyRealtimePage {
   }
 
   onStopSelected(stopSelected: any) {
-    console.debug(JSON.stringify(stopSelected));
+    this.stop = stopSelected;
   }
 
   find() {
-    this.refs = this.stop.refs[0];
+    this.refs = this.stop.split(':')[1].trim();
     this.platform.ready().then(() => {
       this.keolisApi.getTimeByStop(this.refs)
         .then(data => {
@@ -72,7 +73,9 @@ export class AddModifyRealtimePage {
           //console.log(data.status);
           if(data.status == 200) {
             xml2js.parseString(data.data, function (err, result) {
+              console.debug(result.xmldata);
               that.times = result.xmldata;
+              that.showFind = true;
             })
           }
         })
@@ -85,7 +88,8 @@ export class AddModifyRealtimePage {
   save() {
     let ligneId = this.vers.split(':')[0].trim();
     let sensId = this.vers.split(':')[1].trim();
-    this.linesService.saveStop(ligneId, sensId, this.stop.arret[0].nom, this.couleur);
+    let arret = this.stop.split(':')[0].trim();
+    this.linesService.saveStop(ligneId, sensId, arret, this.couleur);
   }
 
 }
