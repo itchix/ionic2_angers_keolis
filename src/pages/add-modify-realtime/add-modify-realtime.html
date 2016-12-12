@@ -30,9 +30,14 @@
     <button ion-fab color="primary" (click)="save()"><ion-icon name="bookmark"></ion-icon></button>
   </ion-fab>
   <button ion-button round full (click)="find()">Rechercher</button>
+  <br><br>
+  <b>Il est : {{ dateNow }}</b>
   <ion-list *ngIf="showFind">
-    <ion-item *ngFor="let time of times.horaires[0].horaire">
-      Prochain passage : {{ time.passages[0].passage[0].duree }}
+    <ion-list-header>
+      Prochains passages
+    </ion-list-header>
+    <ion-item *ngFor="let time of times">
+         {{ time.duree }} vers {{ time.destination }}
     </ion-item>
   </ion-list>
 </ion-content>

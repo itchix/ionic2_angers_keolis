@@ -17,10 +17,12 @@ export class AddModifyRealtimePage {
   public stop: any;
   public couleur: string;
   public refs: string;
-  public times: Array<any>;
+  public times: Array<any> = [];
   public showFind: boolean = false;
+  public dateNow: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public keolisApi: KeolisAPI, public linesService: LinesService) {
+    let that = this;
     this.platform.ready().then(() => {
       this.keolisApi.getLines()
         .then(data => {
@@ -37,6 +39,10 @@ export class AddModifyRealtimePage {
           console.log(error);
         });
     });
+    setInterval(function(){
+      let date = new Date();
+      that.dateNow = date.toLocaleTimeString();
+    }, 1000);
   }
 
   onLineSelected(versSelected: string) {
@@ -64,7 +70,9 @@ export class AddModifyRealtimePage {
   }
 
   find() {
+    this.times = [];
     this.refs = this.stop.split(':')[1].trim();
+    let timesFromApi : Array<any>;
     this.platform.ready().then(() => {
       this.keolisApi.getTimeByStop(this.refs)
         .then(data => {
@@ -73,9 +81,18 @@ export class AddModifyRealtimePage {
           //console.log(data.status);
           if(data.status == 200) {
             xml2js.parseString(data.data, function (err, result) {
-              console.debug(result.xmldata);
-              that.times = result.xmldata;
+              timesFromApi = result.xmldata;
               that.showFind = true;
+              for(const horaire of timesFromApi['horaires'][0].horaire) {
+                if(horaire['passages'][0].passage !== undefined) {
+                  for(const time of horaire['passages'][0].passage) {
+                    that.times.push(time);
+                  }
+                }
+              }
+              that.times = that.times.sort((n1,n2) => {
+                return n1.duree - n2.duree;
+              });
             })
           }
         })
