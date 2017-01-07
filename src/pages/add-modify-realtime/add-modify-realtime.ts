@@ -92,8 +92,19 @@ export class AddModifyRealtimePage {
                   }
                 }
               }
+              // Ascending sort
               that.times = that.times.sort((n1,n2) => {
-                return n1.duree - n2.duree;
+                let hours1 = n1.duree[0].split(':')[0].trim();
+                let hours2 = n2.duree[0].split(':')[0].trim();
+                let minutes1 = n1.duree[0].split(':')[1].trim();
+                let minutes2 = n2.duree[0].split(':')[1].trim();
+                let date1 = new Date();
+                date1.setHours(hours1);
+                date1.setMinutes(minutes1);
+                let date2 = new Date();
+                date2.setHours(hours2);
+                date2.setMinutes(minutes2);
+                return date1 < date2 ? -1 : date1 > date2 ? 1 : 0;
               });
             })
           }
