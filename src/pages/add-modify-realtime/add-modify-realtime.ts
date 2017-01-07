@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { LinesService } from "../services/lines-service";
 import { KeolisAPI } from "../services/keolis-api";
 import * as xml2js from "xml2js";
@@ -19,9 +19,10 @@ export class AddModifyRealtimePage {
   public refs: string;
   public times: Array<any> = [];
   public showFind: boolean = false;
+  public showArret: boolean = false;
   public dateNow: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public keolisApi: KeolisAPI, public linesService: LinesService) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public navParams: NavParams, public platform: Platform, public keolisApi: KeolisAPI, public linesService: LinesService) {
     let that = this;
     this.platform.ready().then(() => {
       this.keolisApi.getLines()
@@ -49,13 +50,13 @@ export class AddModifyRealtimePage {
     this.platform.ready().then(() => {
       this.keolisApi.getStopsByLines(versSelected)
         .then(data => {
+          this.showArret = true;
           let that = this;
           //console.log(data.headers);
           //console.log(data.status);
           if(data.status == 200) {
             xml2js.parseString(data.data, function (err, result) {
               that.stops = result.xmldata.alss[0].als;
-              that.couleur = result.xmldata.alss[0].als[0].ligne.couleur
             })
           }
         })
@@ -85,6 +86,7 @@ export class AddModifyRealtimePage {
               that.showFind = true;
               for(const horaire of timesFromApi['horaires'][0].horaire) {
                 if(horaire['passages'][0].passage !== undefined) {
+                  that.couleur = horaire['description'][0].couleur[0];
                   for(const time of horaire['passages'][0].passage) {
                     that.times.push(time);
                   }
@@ -106,7 +108,30 @@ export class AddModifyRealtimePage {
     let ligneId = this.vers.split(':')[0].trim();
     let sensId = this.vers.split(':')[1].trim();
     let arret = this.stop.split(':')[0].trim();
-    this.linesService.saveStop(ligneId, sensId, arret, this.couleur);
+    this.showAlert(ligneId, sensId, arret);
+  }
+
+  showAlert(ligneId, sensId, arret) {
+    let alert = this.alertCtrl.create({
+      title: 'Enregistrement',
+      subTitle: 'Mettre en favoris la selection?',
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: data => {
+            //
+          }
+        },
+        {
+          text: 'Sauvegarder',
+          handler: data => {
+            this.linesService.saveStop(ligneId, sensId, arret, this.couleur);
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

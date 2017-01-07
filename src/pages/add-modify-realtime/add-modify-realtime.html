@@ -17,7 +17,7 @@
         </ion-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="showArret">
       <ion-label>Arrêts</ion-label>
       <ion-select [(ngModel)]="stop" (ionChange)="onStopSelected(stop)">
         <ion-option *ngFor="let oneStop of stops" value="{{ oneStop.arret[0].nom }} : {{ oneStop.refs }} ">
@@ -30,8 +30,6 @@
     <button ion-fab color="primary" (click)="save()"><ion-icon name="bookmark"></ion-icon></button>
   </ion-fab>
   <button ion-button round full (click)="find()">Rechercher</button>
-  <br><br>
-  <b>Il est : {{ dateNow }}</b>
   <ion-list *ngIf="showFind">
     <ion-list-header>
       Prochains passages
