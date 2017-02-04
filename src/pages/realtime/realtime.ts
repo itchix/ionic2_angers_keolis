@@ -37,11 +37,15 @@ export class RealtimePage {
     setInterval(function(){
       let date = new Date();
       that.dateNow = date.toLocaleTimeString();
-      }, 1000);
+    }, 1000);
   }
 
   addRealtime() {
     this.navCtrl.push(AddModifyRealtimePage);
+  }
+
+  showStopRealtime(stop) {
+    this.navCtrl.push(RealtimePage, {"stop": stop})
   }
 
 }

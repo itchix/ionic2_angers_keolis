@@ -12,7 +12,7 @@
     Il est : {{ dateNow }}
   </ion-item>
   <ion-list>
-    <ion-item *ngFor="let stop of stops">
+    <ion-item *ngFor="let stop of stops" (click)="showStopRealtime(stop)">
       {{ stop.ligne }} : {{ stop.sens }} : {{ stop.arret }}
     </ion-item>
   </ion-list>

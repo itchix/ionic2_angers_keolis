@@ -5,12 +5,14 @@ import { RealtimePage } from '../pages/realtime/realtime';
 import { AddModifyRealtimePage } from '../pages/add-modify-realtime/add-modify-realtime';
 import { LinesService } from "../pages/services/lines-service";
 import { KeolisAPI } from "../pages/services/keolis-api";
+import { StopRealtimePage } from "../pages/stop-realtime/stop-realtime";
 
 @NgModule({
   declarations: [
     MyApp,
     RealtimePage,
-    AddModifyRealtimePage
+    AddModifyRealtimePage,
+    StopRealtimePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -19,7 +21,8 @@ import { KeolisAPI } from "../pages/services/keolis-api";
   entryComponents: [
     MyApp,
     RealtimePage,
-    AddModifyRealtimePage
+    AddModifyRealtimePage,
+    StopRealtimePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, LinesService, KeolisAPI]
 })
