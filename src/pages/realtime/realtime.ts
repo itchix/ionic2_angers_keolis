@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { AddModifyRealtimePage } from "../add-modify-realtime/add-modify-realtime";
 import { LinesService } from "../services/lines-service";
+import {StopRealtimePage} from "../stop-realtime/stop-realtime";
 
 @Component({
   selector: 'page-realtime',
@@ -53,7 +54,7 @@ export class RealtimePage {
   }
 
   showStopRealtime(stop) {
-    this.navCtrl.push(RealtimePage, {"stop": stop})
+    this.navCtrl.push(StopRealtimePage, {"stop": stop})
   }
 
   ionViewDidEnter() {
